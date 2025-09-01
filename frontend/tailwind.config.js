@@ -1,4 +1,5 @@
 import daisyui from 'daisyui';
+import lineClamp from '@tailwindcss/line-clamp'
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -9,8 +10,8 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [daisyui],
+  plugins: [daisyui, lineClamp],
   daisyui: {
-    themes: ["light", "dark", "forest"],
+    themes: ["forest"],
   },
 }
