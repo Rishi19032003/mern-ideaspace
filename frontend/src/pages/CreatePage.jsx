@@ -1,12 +1,16 @@
 import { ArrowLeftIcon } from "lucide-react"
 import { useState } from "react"
 import toast from "react-hot-toast"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
+import axios from "axios"
+import api from "../lib/axios.js"
 
 const CreatePage = () => {
   const [title, setTitle] = useState("")
   const [content, setContent] = useState("")
   const [loading, setLoading] = useState(false)
+
+  const navigate = useNavigate()
 
   const handelSubmit = async (e) => {
     if (!title.trim() || !content.trim()) {
@@ -14,15 +18,27 @@ const CreatePage = () => {
       toast.error("All fields are required")
       return
     }
-
+    
+    e.preventDefault()
     setLoading(true)
 
     try {
-      await axios.post("http://")
+      await api.post("/notes", { title, content })
+      toast.success("Note created successfully!")
+      navigate("/")
+      
     } catch (error) {
-      
+      console.error("Error in the handleSubmit function", error)
+      if (error.response.status === 429) {
+        toast.error("Slow down! You are making too many requests!", {
+          duration: 4000
+        })
+      } else {
+        toast.error("Failed to create note")
+      }
+
     } finally {
-      
+      setLoading(false)
     }
   }
 
